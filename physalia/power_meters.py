@@ -108,7 +108,8 @@ class MonsoonPowerMeter(PowerMeter):
                 )
             if i == 179:
                 raise Exception("Could not find device.")
-        android.connect_adb_through_wifi()
+        if not android.is_wifi_connection_established():
+            android.connect_adb_through_wifi()
         self.monsoon_usb_enabled(False)
         if android.is_locked():
             click.secho(
@@ -207,6 +208,6 @@ class MonsoonHVPMPowerMeter(MonsoonPowerMeter):
         self.engine = SampleEngine(self.monsoon)
         self.engine.ConsoleOutput(False)
 
-        if android.is_android_device_available():
-            android.reconnect_adb_through_usb()
+        #if android.is_android_device_available():
+            #android.reconnect_adb_through_usb()
         self.monsoon_usb_enabled(True)

@@ -184,4 +184,11 @@ def get_instrumentation_for_app(app_pkg, test_pkg=""):
     search = pattern.search(output)
     if search:
         return search.group(1)
-    
+
+def is_wifi_connection_established():
+    result = subprocess.check_output(
+        "adb devices",
+        shell=True,
+        universal_newlines=True
+    )
+    return True if re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:5555\s+device", result) else False
