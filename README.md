@@ -17,7 +17,7 @@ More info and documentation in the [website](https://tqrg.github.io/physalia/).
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install git+https://github.com/luiscruz/PyMonsoon
-$ pip install physalia
+$ pip install git+https://github.com/EricZielinski/physalia
 ```
 
 You may have to install libusb:
