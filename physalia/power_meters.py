@@ -73,7 +73,6 @@ class MonsoonPowerMeter(PowerMeter):
     Make sure the Android device has Passlock disabled.
     Your server and device have to be connected to the same network.
     """
-
     def __init__(self, voltage=3.8, serial=None):  # noqa: D102,D107
         self.monsoon = None
         self.serial = serial
@@ -108,8 +107,7 @@ class MonsoonPowerMeter(PowerMeter):
                 )
             if i == 179:
                 raise Exception("Could not find device.")
-        if not android.is_wifi_connection_established():
-            android.connect_adb_through_wifi()
+        android.connect_adb_through_wifi()
         self.monsoon_usb_enabled(False)
         if android.is_locked():
             click.secho(
@@ -143,7 +141,6 @@ class MonsoonPowerMeter(PowerMeter):
         set_voltage_if_different(self.monsoon, self.voltage)
         self.engine = SampleEngine(self.monsoon)
         self.engine.ConsoleOutput(False)
-
         if android.is_android_device_available():
             android.reconnect_adb_through_usb()
         self.monsoon_usb_enabled(True)
@@ -173,13 +170,10 @@ class MonsoonPowerMeter(PowerMeter):
         if len(samples) == 3:
             timestamps = samples[0]
             currents = samples[1]
+            voltage = samples[2]
             if timestamps:
-                sample_hz = 50000
-                delta_time = 1/sample_hz
                 time_deltas = [j-i for i, j in zip(timestamps[:-1], timestamps[1:])]
-
-                energy_consumption = sum(np.array(currents[:-1])*np.array(time_deltas))/1000
-                # energy_consumption = sum(currents)*delta_time
+                energy_consumption = sum(np.array(currents[:-1])*np.array(time_deltas)*np.array(voltage[:-1]))/1000
                 duration = timestamps[-1]
                 return energy_consumption, duration, False
         return None, None, True
@@ -202,12 +196,13 @@ class MonsoonHVPMPowerMeter(MonsoonPowerMeter):
             ),
             fg='blue'
         )
+
         self.monsoon = HVPM.Monsoon()
         self.monsoon.setup_usb(self.serial, pmapi.USB_protocol())
         set_voltage_if_different(self.monsoon, self.voltage)
         self.engine = SampleEngine(self.monsoon)
         self.engine.ConsoleOutput(False)
 
-        #if android.is_android_device_available():
-            #android.reconnect_adb_through_usb()
+        if android.is_android_device_available():
+             android.reconnect_adb_through_usb()
         self.monsoon_usb_enabled(True)
