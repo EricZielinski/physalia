@@ -11,11 +11,13 @@ Energy measurement framework for Mobile Apps.
 
 More info and documentation in the [website](https://tqrg.github.io/physalia/).
 
+This forked version factors in voltage into the energy consumption calculation.
+
 ## Install
 
 ```
-$ python3 -m venv venv
-$ source venv/bin/activate
+$ python3 -m venv venv #Skip if virtual environment for AR has already been created
+$ source venv/bin/activate #Skip if virtual environment for AR is already activated
 $ pip install git+https://github.com/luiscruz/PyMonsoon
 $ pip install git+https://github.com/EricZielinski/physalia
 ```
@@ -83,8 +85,4 @@ To run all tests and checks locally run:
 
 ### Debugging
 
-#### Unable to find device
-Try executing with `sudo`.
-
-#### Device doesn't power on
-Connect device to the front of Monsoon with a USB cable.
+Review Android Runner's Monsoon plugin [README](https://github.com/S2-group/android-runner/blob/master/AndroidRunner/Plugins/monsoon/README_Monsoon.md)
